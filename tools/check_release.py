@@ -87,6 +87,9 @@ SOURCE_FILES=(
     'z8area/raw_size.py',
     'z8area/sizes/hooks.S',
     'z8area/wide.py',
+    'z8focal/__init__.py',
+    'z8focal/hooks.S',
+    'z8focal/patcher.py',
     'z8h265/__init__.py',
     'z8h265/patcher.py',
     'z8h265/src/hooks.S',
@@ -340,7 +343,7 @@ REPOSITORY_FILES=(
 )
 CODE_FILES=('resources/precapture.bin', 'resources/pixelshift.bin', 'resources/pixelshift-af.bin', 'resources/opengate.bin', 'resources/anamorphic.bin', 'resources/h265.bin', 'resources/log.bin', 'resources/quality.bin', 'resources/shared.bin', 'resources/heif-format.bin', 'resources/heif-capture.bin', 'resources/heif-srgb.bin', 'resources/area-sizes.bin', 'resources/area-formula.bin',
             'resources/area-quick.bin', 'resources/area-thumbnail.bin', 'resources/heif-drive.bin',
-            'resources/heif-icc.bin', 'resources/precapture-menu.bin')
+            'resources/heif-icc.bin', 'resources/precapture-menu.bin', 'resources/focal-length.bin')
 MANIFEST='release-manifest.json'
 # Separate post-production download: the F LUT with its identity, numerical checks, guide and license,
 # flattened into one folder (archive name -> checkout path). It carries no firmware code.

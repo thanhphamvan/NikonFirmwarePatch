@@ -5,8 +5,9 @@ from z8patch.image import BASE, branch
 
 STRING_IDS = {'opengate-nraw': (3137,5), 'pixelshift': (3142,5), 'prores': (3147,6),
               'anamorphic': (3153,8), 'h265': (3161,56), 'log': (3217,8),
-              'opengate-e1': (3225,9), 'sdr-heif': (3234,4), 'photo-areas': (3238,12)}
-TEXT, TABLES, TABLES_END = 0x40A50000, 0x40A7C000, 0x40AF0000   # E2: tables moved up 48 KiB for the open-gate help text
+              'opengate-e1': (3225,9), 'sdr-heif': (3234,4), 'photo-areas': (3238,12),
+              'focal-length': (3250,4)}
+TEXT, TABLES, TABLES_END = 0x40A50000, 0x40A84000, 0x40AF8000   # tables moved up for open-gate + focal-length help text
 STRING_END = 3225                 # without the open-gate E1 strings (v0.4.0 layout)
 BANK, CONFIG = 0x40980000, 0x40980F00
 ROWS, EVENTS, PAGE, CALLBACK = 0x3AA4758, 0x3AA4EE8, 0x4BCC2B0, 0x4BF3A80

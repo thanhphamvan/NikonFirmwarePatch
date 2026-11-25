@@ -1,5 +1,15 @@
 # 更新日志 / Changelog
 
+## [Unreleased]
+
+### Features
+
+- **Focal length display.** `still-photo-tools` adds a live-view focal length read-out for zoom lenses without power zoom, with a Setup Menu row: While zooming, Always on or Off. Text that the stock 7-character buffer cannot hold stays hidden. Host and emulator evidence only; not yet tested on a camera.
+
+  ```sh
+  python patch.py Z_8_0311.bin --features still-photo-tools --version 04.07 --tag p0 --output build/photo
+  ```
+
 ## [v0.5.0](https://github.com/XinmiaoZhao/NikonFirmwarePatch/releases/tag/v0.5.0) — 四组补丁重新分组 / Regrouped feature set
 
 2026-11-21 发布。以下变化相对于 v0.4.0。

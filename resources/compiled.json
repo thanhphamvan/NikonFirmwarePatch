@@ -3057,6 +3057,65 @@
         "assembler-with-cpp"
       ],
       "resource": "resources/area-formula.bin"
+    },
+    "focal-length": {
+      "bytes": 1288,
+      "sha256": "5f65bb7dc86b51db11c32f14392547f379acc7fdcca9fe496f232f4d3132fe3e",
+      "symbols": {
+        "focal_get_mode": {
+          "va": "0x40b9c3c0",
+          "bytes": 0
+        },
+        "focal_mode_texts": {
+          "va": "0x40b9c4e8",
+          "bytes": 0
+        },
+        "focal_sub_items": {
+          "va": "0x40b9c500",
+          "bytes": 0
+        },
+        "focal_lens_hook": {
+          "va": "0x40b9c000",
+          "bytes": 0
+        },
+        "focal_vis_diff_hook": {
+          "va": "0x40b9c234",
+          "bytes": 0
+        },
+        "focal_vis_show_hook": {
+          "va": "0x40b9c2ac",
+          "bytes": 0
+        },
+        "focal_draw_hook": {
+          "va": "0x40b9c330",
+          "bytes": 0
+        },
+        "focal_setup_refresh_hook": {
+          "va": "0x40b9c3e0",
+          "bytes": 0
+        },
+        "focal_sub_entry_hook": {
+          "va": "0x40b9c448",
+          "bytes": 0
+        },
+        "focal_sub_ok_hook": {
+          "va": "0x40b9c490",
+          "bytes": 0
+        }
+      },
+      "source_sha256": {
+        "z8focal/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "z8focal/hooks.S": "3985de558d905d7b2c83bba772fa4e52c1d6302a54392e27027cd062cd1fa0c2",
+        "z8focal/patcher.py": "19d3966e00285046abc0401eb1b86aa612b2ef1feb4088edec6dcf08bd1c8f99"
+      },
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "flags": [
+        "-target",
+        "aarch64-none-elf",
+        "-x",
+        "assembler-with-cpp"
+      ],
+      "resource": "resources/focal-length.bin"
     }
   }
 }

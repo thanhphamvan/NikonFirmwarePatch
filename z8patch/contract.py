@@ -3,7 +3,7 @@
 No composer, assembler, linker or resource-generator imports.
 """
 import struct
-STRING_TABLES = 0x40A7C000   # shared language offset tables (E2: moved up from 0x40A70000)
+STRING_TABLES = 0x40A84000   # shared language offset tables (moved up for open-gate + focal-length help text)
 
 
 def verify_contract(old,new,features):
@@ -36,8 +36,8 @@ def verify_contract(old,new,features):
     # 36 offset arrays: native text offsets are byte-for-byte retained, added IDs
     # are present exactly for their selected modules. String IDs stay fixed across masks.
     ranges=[(3137,3142,framing),(3142,3147,photo),(3147,3153,quality),
-            (3153,3161,framing),(3161,3217,quality),(3217,3225,log),(3225,3234,framing),(3234,3238,photo),(3238,3250,photo)]
-    entries=3251 if photo else (3235 if framing else 3226)             # the open-gate E1/E2 strings extend the table only with framing
+            (3153,3161,framing),(3161,3217,quality),(3217,3225,log),(3225,3234,framing),(3234,3238,photo),(3238,3250,photo),(3250,3254,photo)]
+    entries=3255 if photo else (3235 if framing else 3226)             # the open-gate E1/E2 strings extend the table only with framing
     for language in range(36):
         table=read(new,'<Q',0x311C5A0+8*language)[0]
         original_table=read(old,'<Q',0x311C5A0+8*language)[0]
@@ -58,18 +58,24 @@ def verify_contract(old,new,features):
     loader=read(new,'<II',0x1024D8C)
     end=((loader[0]>>5)&65535)|(((loader[1]>>5)&65535)<<16)
     if video or photo:
-        need(0x40AE2000<=end<=0x40C00000 and end%4096==0,'copy boundary covers resources')
+        # RAM past the copy end is uninitialised on a camera (zero in the emulator): the 36 offset tables must be inside it.
+        need(STRING_TABLES+36*entries*4<=end<=0x40C00000 and end%4096==0,'copy boundary covers resources')
     else:
         # The 228-byte RAW recording menu starts at 0x409F9000 and needs the next page.
         need(end==0x409FA000,'RAW-only loader')
     need((new[0xE0FE90:0xE0FE94]!=old[0xE0FE90:0xE0FE94])==raw,'pre-capture hook ownership')
-    for va in (0x40EC8D24,0x40EC8D28,0x406C2304,0x410B7C64):
+    for va in (0x40EC8D24,0x40EC8D28,0x406C2304,0x410B7C64,0x410788E0,0x404356FC,0x40435894,0x4041CDE0):
         at = va-base
         need((new[at:at+4]!=old[at:at+4])==photo,'photo capture hook ownership')
-    for state, present in ((0xAB,photo),(0x17D,quality)):
+    for state, present in ((0xAB,photo),(0x1B1,photo),(0x17D,quality)):
         pos = 0x4BFFCC0+96*state
         for delta in (40,80):
             need((new[pos+delta:pos+delta+8]!=old[pos+delta:pos+delta+8])==present,'submenu ownership')
+    for va in (0x40597D00,0x40597D10):
+        at = va-base
+        need((new[at:at+4]!=old[at:at+4])==photo,'setup menu focal-length visibility ownership')
+    need((new[0x4BF7A90:0x4BF7A98]!=old[0x4BF7A90:0x4BF7A98])==photo,'setup menu focal-length refresh ownership')
+    need((read(new,'<II',0x43D59838-base)==(3250,3251))==photo,'setup menu focal-length row label/help')
     if photo:
         need(end>=0x40BA0000,'crop data and zero-state loader floor')
         need(read(new,'<Q',0x4DA1288)[0]==0x40B91040,'fixed C-low geometry pointer')
@@ -81,6 +87,7 @@ def verify_contract(old,new,features):
         need(read(new,'<H',0x40B84000-base+0x140)[0]==0x100,'still icon descriptors')
         need(read(new,'<H',0x4BD79D0+32)[0]==7,'crop menu row count')
         need(new[0x409ED000-base:0x409F0000-base]==bytes(0x3000),'pixel shift initial worker state')
+        need(not any(new[0x40B9F000-base:0x40B9F010-base]),'focal length private state initialized')
     if log:need(end>=0x40B50000 and not any(new[0x40B0E000-base:0x40B0F100-base]),'Log private state initialized')
     if quality:need(new[0x40A40000-base]==0,'star force initially clear')
     if framing:need(not any(new[0x4097F000-base:0x40980000-base]),'AP state initialized')

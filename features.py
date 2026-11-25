@@ -137,6 +137,9 @@ def compose(eg, features, compiler='clang', code_source='prebuilt', *, check_rec
         from z8area.patcher import build_main as crop
         part, detail['photo-areas'] = crop(eg,strings,unit,star_entries if joint else None)
         merge('photo-areas',part)
+        from z8focal.patcher import build_main as focal
+        part, detail['focal-length'] = focal(eg,strings,unit)
+        merge('focal-length',part)
         if joint:
             from z8patch.photo_shared import emit_condition
             emit_condition(img,condition_sources)

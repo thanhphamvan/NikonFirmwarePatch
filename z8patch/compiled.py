@@ -40,6 +40,7 @@ for _name, _folder, _base, _limit in (
     ('heif-srgb','z8heif/srgb',0x40B71950,0x40B71A00),
     ('area-sizes','z8area/sizes',0x40B82000,0x40B84000),
     ('area-formula','z8area/formula',0x40B7D800,0x40B7E000),
+    ('focal-length','z8focal',0x40B9C000,0x40B9D000),
 ):
     SPECS[_name] = dict(source=_folder+'/hooks.S',folder=_folder,asm_base=_base,limit=_limit,
                         flags=['-target','aarch64-none-elf','-x','assembler-with-cpp'])
